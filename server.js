@@ -46,7 +46,7 @@ MongoClient.connect('mongodb+srv://Matt:_t9N2J8XBXRyi_r@cluster0-wj4w2.mongodb.n
                 }
             },
             {
-                upsert: true
+                upsert: false
             }
         )
             .then(result => {
@@ -58,15 +58,16 @@ MongoClient.connect('mongodb+srv://Matt:_t9N2J8XBXRyi_r@cluster0-wj4w2.mongodb.n
 
     app.delete('/quotes', (req, res) => {
         quotesCollection.deleteOne(
-            { name: req.body.name},
+            {name: req.body.name},
         )
             .then(result => {
-                res.json(`Deleted Darth Vader's quote`)
+                if (result.deletedCount === 0) {
+                    return res.json('No quote to delete')
+                }
+                else
+                    return res.json(`Deleted Darth Vader's quote`)
             })
             .catch(error => console.error(error))
     })
-
-    })
-
     
-
+})

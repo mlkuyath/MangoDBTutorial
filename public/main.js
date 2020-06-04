@@ -1,5 +1,4 @@
 const update = document.querySelector('#update-button');
-
 update.addEventListener('click', _ => {
     fetch('/quotes', {
         method: 'put',
@@ -10,14 +9,16 @@ update.addEventListener('click', _ => {
         })
     })
     .then(res => {
-        if (res.ok) return res.json()
+        if (res.ok)  return res.json("success")
       })
       .then(response => { 
-        window.location.reload(true)
+        window.location.reload()
       })
 })
 
 const deleteButton = document.querySelector('#delete-button');
+
+const messageDiv = document.querySelector("#message")
 
 deleteButton.addEventListener('click', _ => {
     fetch('/quotes', {
@@ -29,8 +30,14 @@ deleteButton.addEventListener('click', _ => {
     })
         .then(res => {
             if(res.ok) return res.json()
+        .then(response => {
+            if (response === 'No quote to delete') {
+                messageDiv.textContent = 'No Darth Vader quote to delete'
+            } else {
+                window.location.reload(true)
+            }
         })
-        .then(data => {
-            window.location.reload()
         })
+
 })
+
